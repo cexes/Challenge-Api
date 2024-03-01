@@ -1,0 +1,15 @@
+version: "3.1"
+
+services:
+  db:
+    image: postgres:14.2-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: spider_man
+      POSTGRES_PASSWORD: iron_man
+      POSTGRES_DB: challengeapi
+    ports:
+      - "5432:5432"
+
+volumes:
+  pg_data:  # Definindo o nome do volume Docker
