@@ -1,8 +1,11 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
 const routes = require('./src/routes/routes');
 
+app.use(express.json());
 app.use(routes);
+
 
 app.listen(3025, ()=> {
     console.log("Running")

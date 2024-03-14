@@ -11,5 +11,4 @@ async function  InsertUserCompany(complete_name, password, email, cnpj) {
     }
 
 
-InsertUserConsumer("zezzao cleitao da massa", "asdfasdf","xzezao@emai.com", "12345678912");
-//InsertUserCompany("César Henrique Motta de Oliveira","BLACK DIMMON KISS ", "mottacesar001@gmail.com", "12345678912345" )
+module.exports = { InsertUserConsumer, InsertUserCompany };
