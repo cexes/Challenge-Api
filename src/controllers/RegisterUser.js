@@ -1,13 +1,14 @@
 const userQuery = require('../database/models/LoginQuery');
 
 class RegisterUser {
-    constructor(complete_name, passoword, email, cpf) {
+    constructor(complete_name, password, email, cpf) {
         this.complete_name = complete_name;
-        this.passoword = passoword;
+        this.password = password;
         this.email = email;
         this.cpf = cpf;
 
-        userQuery.InsertUserConsumer(this.complete_name, this.passoword, this.email, this.cpf);
+         userQuery.InsertUserConsumer(this.complete_name, this.password, this.email, this.cpf);
+
     }
 }
 
