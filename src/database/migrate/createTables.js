@@ -26,8 +26,25 @@ async function CreateTableMerchant() {
    `
    )
     console.log(query_table_company);
-    pool.end()
    
+}
+
+async function CreateTableAccount() {
+    const query_table_account = await pool.query (`
+      CREATE TABLE Account  (  
+      ID SERIAL PRIMARY KEY,
+      BALANCE DECIMAL(10, 2) NOT NULL,
+      user_id INTEGER NOT NULL,  
+      user_merchant_id INTEGER,        
+      FOREIGN KEY (user_id) REFERENCES users(user_id),  
+      FOREIGN KEY (user_merchant_id) REFERENCES merchant_users(user_id)      
+);  
+
+   `
+   )
+    console.log(query_table_account);
+pool.end();   
 }
 CreateTableUsers();
 CreateTableMerchant();
+CreateTableAccount(); 
