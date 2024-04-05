@@ -34,7 +34,7 @@ async function CreateTableAccount() {
       CREATE TABLE Account  (  
       ID SERIAL PRIMARY KEY,
       BALANCE DECIMAL(10, 2) NOT NULL,
-      user_id INTEGER NOT NULL,  
+      user_id,  
       user_merchant_id INTEGER,        
       FOREIGN KEY (user_id) REFERENCES users(user_id),  
       FOREIGN KEY (user_merchant_id) REFERENCES merchant_users(user_id)      
