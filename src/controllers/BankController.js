@@ -3,8 +3,8 @@ class Bank {
 
   constructor() {}
 
-   CheckBallance(email) {
-     query.ReturnBallance(email)
+   CheckBalance(email) {
+     query.ReturnBalance(email)
    }
   
   AddValueOnBalance(email, value) {

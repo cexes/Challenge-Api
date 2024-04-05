@@ -7,13 +7,15 @@ async function SelectAll () {
 
 } 
 
-async function ReturnBallance(email) {
+async function ReturnBalance(email) {
    const balanceByUser = (
       `SELECT account.balance
        FROM users
        INNER JOIN account ON users.user_id = account.user_id
          WHERE users.email = '${email}';
      `);
+
+     
    const query = await pool.query(balanceByUser)
    console.log(query.rows[0].balance);
 }
@@ -34,4 +36,4 @@ async function AddValueOnBalance(email, value) {
 }
 
 
-module.exports = { ReturnBallance, AddValueOnBalance}
+module.exports = { ReturnBalance, AddValueOnBalance}

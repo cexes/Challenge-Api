@@ -18,10 +18,10 @@ routes.post('/register_company', (req,res) => {
     new_merchant = new registerCompanyController(complete_name, password, email, cnpj)
 })
 
-routes.post('/check_ballance',(req,res) => {
+routes.post('/check_balance',(req,res) => {
    const email = req.body.email;
    const bank = new bankController();
-   bank.CheckBallance(email);
+   bank.CheckBalance(email);
 })
 
 routes.post('/add_value_on_balance', (req, res) => {
