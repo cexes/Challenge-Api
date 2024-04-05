@@ -24,4 +24,10 @@ routes.post('/check_ballance',(req,res) => {
    bank.CheckBallance(email);
 })
 
+routes.post('/add_value_on_balance', (req, res) => {
+    const { email, value } = req.body;
+    const bank = new bankController();
+    bank.AddValueOnBalance(email,value)
+});
+
 module.exports = routes;

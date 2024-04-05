@@ -18,4 +18,20 @@ async function ReturnBallance(email) {
    console.log(query.rows[0].balance);
 }
 
-module.exports = { ReturnBallance}
+async function AddValueOnBalance(email, value) {
+    const addValueBalance = `
+      UPDATE account
+      SET balance = balance + $2
+      FROM users
+      WHERE account.user_id = users.user_id
+      AND users.email = $1;
+  `;
+  const query = await pool.query(addValueBalance, [email, value]);
+  console.log(query);
+
+    
+
+}
+
+
+module.exports = { ReturnBallance, AddValueOnBalance}

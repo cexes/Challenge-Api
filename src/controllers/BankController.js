@@ -7,8 +7,8 @@ class Bank {
      query.ReturnBallance(email)
    }
   
-  AddValueOnBalance(value) {
-    this.balance += value;
+  AddValueOnBalance(email, value) {
+    query.AddValueOnBalance(email, value)
   }
 
   SendMoney(email, value) {
