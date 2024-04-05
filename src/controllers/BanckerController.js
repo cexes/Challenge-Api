@@ -1,13 +1,19 @@
 class Bank {
-  constructor() {
-    this.balance = 0;
-  }
+  
+  constructor(){
+    
+    this.balance = 150.0;
+  
+  };
    
-  Deposit(value) {
-    this.balance += value;
+  SendMoney(email, value) {
+    this.balance -= value;
+    console.log('send' + value + 'for' + email);
     console.log(this.balance);
+    
+    } 
   }
-}
 
-let bb = new Bank();
-bb.Deposit(100.0);
+
+bb = new Bank();
+bb.SendMoney('mottacesar001@gmail.com',50);
