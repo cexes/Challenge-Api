@@ -12,7 +12,7 @@ async function ReturnBalance(email) {
       `SELECT account.balance
        FROM users
        INNER JOIN account ON users.user_id = account.user_id
-         WHERE users.email = '${email}';
+       WHERE users.email = '${email}';
      `);
 
      
@@ -31,9 +31,36 @@ async function AddValueOnBalance(email, value) {
   const query = await pool.query(addValueBalance, [email, value]);
   console.log(query);
 
+}
+
+async function ReturnBalanceByMerchantUser(email) {
+  console.log(email)
+  const balanceByMerchantUser = (
+    `
+    SELECT account.balance
+    FROM merchant_users
+    INNER JOIN account ON merchant_users.user_id = account.user_merchant_id
+    WHERE merchant_users.email = '${email}';
     
+   `);
+   const query = await pool.query(balanceByMerchantUser)
+   console.log(query.rows[0].balance);
+}
+
+async function AddValueOnBalanceByMerchantUser(email, value) {
+  const addValueBalance = `
+    UPDATE account
+    SET balance = balance + $2
+    FROM merchant_users
+    WHERE account.user_merchant_id = merchant_users.user_id 
+    AND merchant_users.email = $1;
+  
+  
+`;
+const query = await pool.query(addValueBalance, [email, value]);
+console.log(query);
 
 }
 
 
-module.exports = { ReturnBalance, AddValueOnBalance}
+module.exports = { ReturnBalance, AddValueOnBalance, ReturnBalanceByMerchantUser, AddValueOnBalanceByMerchantUser}

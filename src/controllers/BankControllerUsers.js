@@ -1,5 +1,5 @@
 const query = require('../database/models/BankQuery')
-class Bank { 
+class BankUsers { 
 
   constructor() {}
 
@@ -21,4 +21,4 @@ class Bank {
 
 
 
-module.exports =  Bank ;
+module.exports =  BankUsers ;
