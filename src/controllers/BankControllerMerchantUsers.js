@@ -3,20 +3,19 @@ class BankMerchantUsers {
 
   constructor() {}
 
-   CheckBalance(email) {
+   async CheckBalance(email) {
+    try{
      query.ReturnBalanceByMerchantUser(email);
+
+   }catch(error){
+     console.log(error);
    }
-  
+   } 
   AddValueOnBalance(email, value) {
     query.AddValueOnBalanceByMerchantUser(email,value)
   }
 
-  SendMoney(email, value) {
-    this.balance -= value;
-    console.log('send' + value + 'for' + email);
-    console.log('R$'  + this.balance);
-    
-    } 
+  
   }
 
 

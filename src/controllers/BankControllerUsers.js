@@ -4,7 +4,14 @@ class BankUsers {
   constructor() {}
 
    CheckBalance(email) {
-     query.ReturnBalance(email)
+    try {
+      
+      query.ReturnBalance(email);
+
+    } catch (error) {
+       console.log("err to very the balance",error.message);
+    }
+     
    }
   
   AddValueOnBalance(email, value) {
@@ -13,8 +20,7 @@ class BankUsers {
 
   SendMoney(email, value) {
     this.balance -= value;
-    console.log('send' + value + 'for' + email);
-    console.log('R$'  + this.balance);
+
     
     } 
   }
