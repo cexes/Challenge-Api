@@ -1,15 +1,21 @@
 const queryRegister = require('../database/models/LoginQuery')
 
 class RegisterCompany  {
-	constructor(complete_name, password, email, cnpj) {
-		this.complete_name = complete_name
-		this.password = password
-		this.email = email
-		this.cnpj = cnpj
+    static async SaveNewCompany(req,res) {
+		try {
+			const { complete_name, password, email, cnpj } = req.body;
+			const companyInsert = await queryRegister.InsertUserCompany(complete_name, password, email, cnpj);
 
-    
-		queryRegister.InsertUserCompany(this.complete_name, this.password, this.email, this.cnpj)    
-    
+			if(companyInsert) {
+				res.status(201).send('User created successfully!');
+			}else {
+				res.status(400).send('User already exists with this email or CNPJ');
+			}
+
+		} catch (error) {
+			console.log(error);
+			res.status(500).send('Internal server error');
+		}
 	}
 
 }

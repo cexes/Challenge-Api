@@ -1,30 +1,33 @@
-const query = require('../database/models/BankQuery')
-class BankUsers { 
+const query = require('../database/models/BankQuery');
 
-  constructor() {}
-
-   CheckBalance(email) {
+class BankUsers {
+  static async CheckBalance(req, res) {
     try {
-      
-      query.ReturnBalance(email);
+      const balance = await query.ReturnBalance(req.body.email);
 
+      if (balance !== undefined) {
+        res.status(200).json({ balance });
+      } else {
+        res.status(404).send('Balance not found for the specified email');
+      }
     } catch (error) {
-       console.log("err to very the balance",error.message);
+      console.error(error);
+      res.status(500).send('Internal server error');
     }
-     
-   }
-  
-  AddValueOnBalance(email, value) {
-    query.AddValueOnBalance(email, value)
   }
 
-  SendMoney(email, value) {
-    this.balance -= value;
-
-    
-    } 
+  static async AddValueOnBalance(req, res) {
+    try {
+      const { email, value } = req.body;
+      await query.AddValueOnBalance(email, value);
+      res.status(200).json("Balance updated");
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Internal server error');
+    }
   }
 
 
+}
 
-module.exports =  BankUsers ;
+module.exports = BankUsers;

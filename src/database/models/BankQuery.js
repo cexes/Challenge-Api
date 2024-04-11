@@ -1,13 +1,8 @@
 const pool = require('../database_config');
 
-async function SelectAll () { 
-  const select = 'SELECT * FROM account;'
-  const query = await pool.query(select);
-  console.log(query.rows);
-
-} 
-
 async function ReturnBalance(email) {
+
+  try{
    const balanceByUser = (
       `SELECT account.balance
        FROM users
@@ -16,11 +11,22 @@ async function ReturnBalance(email) {
      `);
 
      
-   const query = await pool.query(balanceByUser)
-   console.log(query.rows[0].balance);
+   const query = await pool.query(balanceByUser);
+   const balance = parseFloat(query.rows[0].balance);
+    
+   return balance;
+
+  }catch(error){
+
+    console.log(error);
+    throw error;
+
+  }
 }
 
 async function AddValueOnBalance(email, value) {
+
+  try{
     const addValueBalance = `
       UPDATE account
       SET balance = balance + $2
@@ -29,7 +35,12 @@ async function AddValueOnBalance(email, value) {
       AND users.email = $1;
   `;
   const query = await pool.query(addValueBalance, [email, value]);
-  console.log(query);
+  return true;
+
+  }catch(error){
+    console.log(error);
+    throw error;
+  }
 
 }
 

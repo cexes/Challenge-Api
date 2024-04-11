@@ -5,31 +5,15 @@ const registerCompanyController = require('../controllers/RegisterCompany');
 const bankController = require('../controllers/BankControllerUsers');
 const bankControllerMerchant = require('../controllers/BankControllerMerchantUsers');
 
-routes.get('/', (req, res) => {
-    console.log("/")
-});
 
-routes.post('/register_user',( req ,res) => {
-    const { complete_name, password, email, cpf } = req.body;
-    new_user =  new  registerUserController( complete_name, password, email, cpf )
-});
+routes.post('/register_user', registerUserController.SaveNewUser);
 
-routes.post('/register_company', (req,res) => {
-    const { complete_name, password, email, cnpj } = req.body;
-    new_merchant = new registerCompanyController(complete_name, password, email, cnpj)
-});
+routes.post('/register_company', registerCompanyController.SaveNewCompany);
 
-routes.post('/check_balance_user',(req,res) => {
-   const email = req.body.email;
-   const bank = new bankController();
-   bank.CheckBalance(email);
-});
+routes.post('/check_balance_user', bankController.CheckBalance);
 
-routes.post('/add_value_on_balance_user', (req, res) => {
-    const { email, value } = req.body;
-    const bank = new bankController();
-    bank.AddValueOnBalance(email,value)
-});
+routes.post('/add_value_on_balance_user', bankController.AddValueOnBalance);
+
 
 routes.post('/check_balance_merchant_user',(req,res) => {
     const email = req.body.email;
