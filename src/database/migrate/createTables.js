@@ -46,6 +46,6 @@ async function CreateTableAccount() {
       console.error(error);
   }
 }
-Users();
+CreateTableUsers();
 CreateTableMerchant();
 CreateTableAccount(); 

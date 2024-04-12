@@ -94,4 +94,4 @@ async function AddValueOnBalanceByMerchantUser(email, value) {
 }
 
 
-module.exports = { ReturnBalance, AddValueOnBalance, ReturnBalanceByMerchantUser, AddValueOnBalanceByMerchantUser}
+module.exports = { ReturnBalance, AddValueOnBalance, ReturnBalanceByMerchantUser, AddValueOnBalanceByMerchantUser }
