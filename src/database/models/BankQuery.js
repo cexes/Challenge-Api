@@ -27,7 +27,8 @@ async function ReturnBalance(email) {
 async function AddValueOnBalance(email, value) {
 
   try{
-    const addValueBalance = `
+    
+      const addValueBalance = `
       UPDATE account
       SET balance = balance + $2
       FROM users
@@ -45,7 +46,9 @@ async function AddValueOnBalance(email, value) {
 }
 
 async function ReturnBalanceByMerchantUser(email) {
-  console.log(email)
+
+ try{
+
   const balanceByMerchantUser = (
     `
     SELECT account.balance
@@ -54,23 +57,40 @@ async function ReturnBalanceByMerchantUser(email) {
     WHERE merchant_users.email = '${email}';
     
    `);
+
    const query = await pool.query(balanceByMerchantUser)
-   console.log(query.rows[0].balance);
+   const balance = parseFloat(query.rows[0].balance);
+   return balance;
+
+  }catch(error){
+    console.log(error);
+    throw error;
+  }
 }
-
 async function AddValueOnBalanceByMerchantUser(email, value) {
-  const addValueBalance = `
-    UPDATE account
-    SET balance = balance + $2
-    FROM merchant_users
-    WHERE account.user_merchant_id = merchant_users.user_id 
-    AND merchant_users.email = $1;
-  
-  
-`;
-const query = await pool.query(addValueBalance, [email, value]);
-console.log(query);
+  try {
+    const addValueBalance = `
 
+      UPDATE account
+      SET balance = balance + $2
+      FROM merchant_users
+      WHERE account.user_merchant_id = merchant_users.user_id 
+      AND merchant_users.email = $1;
+    `;
+
+    
+
+    const result = await pool.query(addValueBalance, [email, value]);
+    console.log(result)
+    if (result.rowCount === 1) {
+      return true; 
+    } else {
+      return false; 
+    }
+  } catch(error) {
+    console.error(error);
+    throw error;
+  }
 }
 
 

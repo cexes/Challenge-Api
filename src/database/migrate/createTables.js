@@ -28,23 +28,24 @@ async function CreateTableMerchant() {
     console.log(query_table_company);
    
 }
-
 async function CreateTableAccount() {
-    const query_table_account = await pool.query (`
-      CREATE TABLE Account  (  
-      ID SERIAL PRIMARY KEY,
-      BALANCE DECIMAL(10, 2) NOT NULL,
-      user_id,  
-      user_merchant_id INTEGER,        
-      FOREIGN KEY (user_id) REFERENCES users(user_id),  
-      FOREIGN KEY (user_merchant_id) REFERENCES merchant_users(user_id)      
-);  
-
-   `
-   )
-    console.log(query_table_account);
-pool.end();   
+  try {
+      const query_table_account = await pool.query(`
+          CREATE TABLE Account (  
+              id SERIAL PRIMARY KEY,
+              balance NUMERIC(10, 2) NOT NULL DEFAULT 0,
+              user_id INTEGER,
+              user_merchant_id INTEGER,
+              CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(user_id),
+              CONSTRAINT fk_user_merchant_id FOREIGN KEY (user_merchant_id) REFERENCES merchant_users(user_id)
+          );  
+      `);
+      console.log(query_table_account);
+      pool.end();
+  } catch (error) {
+      console.error(error);
+  }
 }
-CreateTableUsers();
+Users();
 CreateTableMerchant();
 CreateTableAccount(); 
