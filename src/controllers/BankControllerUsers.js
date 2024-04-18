@@ -7,6 +7,7 @@ class BankUsers {
 
       if (balance !== undefined) {
         res.status(200).json({ balance });
+        console.log(balance)
       } else {
         res.status(404).send('Balance not found for the specified email');
       }
