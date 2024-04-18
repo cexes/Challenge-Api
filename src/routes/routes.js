@@ -6,16 +6,14 @@ const bankController = require('../controllers/BankControllerUsers');
 const bankControllerMerchant = require('../controllers/BankControllerMerchantUsers');
 
 
-routes.post('/register_user', registerUserController.SaveNewUser);
+routes.post('/register_user', registerUserController.SaveNewUser );
+routes.post('/add_value_on_balance_user', bankController.AddValueOnBalance );
+routes.get('/check_balance_user', bankController.CheckBalance );
 
-routes.post('/register_company', registerCompanyController.SaveNewCompany);
+routes.post('/register_company', registerCompanyController.SaveNewCompany );
+routes.post('/add_value_on_balance_merchant_user', bankControllerMerchant.AddValueOnBalance );
+routes.post('/transaction_balance', bankController.TransactionBalance);
+routes.get('/check_balance_merchant_user', bankControllerMerchant.CheckBalance );
 
-routes.get('/check_balance_user', bankController.CheckBalance);
-
-routes.post('/add_value_on_balance_user', bankController.AddValueOnBalance);
-
-routes.get('/check_balance_merchant_user', bankControllerMerchant.CheckBalance);
-
-routes.post('/add_value_on_balance_merchant_user',bankControllerMerchant.AddValueOnBalance);
 
 module.exports = routes;

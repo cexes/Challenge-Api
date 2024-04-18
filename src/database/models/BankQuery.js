@@ -94,4 +94,31 @@ async function AddValueOnBalanceByMerchantUser(email, value) {
 }
 
 
-module.exports = { ReturnBalance, AddValueOnBalance, ReturnBalanceByMerchantUser, AddValueOnBalanceByMerchantUser }
+async function AddBalanceTransaction(email, value) {
+   try {
+     const query = `
+      WITH found_user AS (
+      SELECT user_id
+      FROM users
+      WHERE email = $1
+      ), found_merchant_user AS (
+      SELECT user_id
+      FROM merchant_users
+      WHERE email = $1
+      )
+     UPDATE account
+     SET balance = balance + $2
+     WHERE user_id = (SELECT user_id FROM found_user)
+     OR user_merchant_id = (SELECT user_id FROM found_merchant_user);
+  `
+     const results = await pool.query(query, [ email, value ]);
+     result = ReturnBalance(email)
+     return result;
+
+   } catch (error) {
+      console.error(error);
+      throw error;
+   }
+}
+
+module.exports = { ReturnBalance, AddValueOnBalance, ReturnBalanceByMerchantUser, AddValueOnBalanceByMerchantUser, AddBalanceTransaction }
