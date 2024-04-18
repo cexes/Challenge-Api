@@ -21,7 +21,7 @@ async function CreateTableMerchant() {
        complete_name VARCHAR(255) NOT NULL,
        password VARCHAR(255) NOT NULL,
        email VARCHAR(255) UNIQUE NOT NULL, 
-       cpnj VARCHAR(14) NOT NULL
+       cnpj VARCHAR(14) NOT NULL
     );
    `
    )
@@ -41,7 +41,6 @@ async function CreateTableAccount() {
           );  
       `);
       console.log(query_table_account);
-      pool.end();
   } catch (error) {
       console.error(error);
   }
