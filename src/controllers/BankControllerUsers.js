@@ -1,5 +1,5 @@
 const query = require('../database/models/BankQuery');
-const axios = require('axios');
+const authorizationMiddleware = require('../middleware/authorizationMiddleware');
 
 class BankUsers {
   static async CheckBalance(req, res) {
@@ -30,18 +30,22 @@ class BankUsers {
     }
   }
 
-static async TransactionBalance(req, res) {
-  try {
-    const { email, value } = req.body;
-    const result = await query.AddBalanceTransaction(email, value);
-    res.status(200).json("Balance $ " + result);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Internal server error');
-  }
+  static async TransactionBalance(req, res) {
+    try {
+        const { email, value } = req.body;
+        const isAuthorized = await authorizationMiddleware(req, res);
+        
+        if (isAuthorized) {
+          const result = await query.AddBalanceTransaction(email, value);
+          res.status(200).json("Balance $ " + result);
+        } else {
+          res.status(403).json({ error: "Transação não autorizada" });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(505).send('Internal server error');
+    }
 }
-
-  
 
 }
 
