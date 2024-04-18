@@ -2,10 +2,11 @@ const BankMerchant = require('../../src/controllers/BankControllerMerchantUsers'
 const query = require('../../src/database/models/BankQuery');
 
 jest.mock('../../src/database/models/BankQuery', () => ({
-    ReturnBalanceByMerchantUser: jest.fn(), // Corrigido o nome da função para ReturnBalanceByMerchantUser
+    ReturnBalanceByMerchantUser: jest.fn(),
+    AddValueOnBalanceByMerchantUser: jest.fn(),
 }));
 
-describe('MerchantUsers', () => {
+describe('CheckBalance', () => {
     afterEach(() => {
         jest.clearAllMocks();
     });
@@ -36,20 +37,39 @@ describe('MerchantUsers', () => {
             expect(mockRes.send).toHaveBeenCalledWith('Balance not found for the specified email');
         });
 
-        it('should returno 500 on internal server error', async () => {
+        it('should return 500 on internal server error', async () => {
             const mockReq = { body: { email: 'empresa@example.com' } };
             const mockRes = { status: jest.fn().mockReturnThis(), send: jest.fn() };
-            query.ReturnBalanceByMerchantUser(new Error('Database error'));
+            query.ReturnBalanceByMerchantUser.mockRejectedValueOnce(new Error('Database error'));
 
             await BankMerchant.CheckBalance(mockReq, mockRes);
             
             expect(mockRes.status).toHaveBeenCalledWith(500);
             expect(mockRes.send).toHaveBeenCalledWith('Internal server error');
+        });
+    });
 
+    describe('AddValueOnBalance', () => {
+        it('should add value to balance', async () => {
+            const mockReq = { body: { email: 'empresa@example.com', value: 50 } };
+            const mockRes = { status: jest.fn().mockReturnThis(), json: jest.fn() };
+
+            await BankMerchant.AddValueOnBalance(mockReq, mockRes);
+
+            expect(query.AddValueOnBalanceByMerchantUser).toHaveBeenCalledWith('empresa@example.com', 50);
+            expect(mockRes.status).toHaveBeenCalledWith(200);
+            expect(mockRes.json).toHaveBeenCalledWith('Balance updated');
         });
 
+        it('should return 500 on internal server error', async () => {
+            const mockReq = { body: { email: 'empresa@example.com', value: 50 } };
+            const mockRes = { status: jest.fn().mockReturnThis(), send: jest.fn() };
+            query.AddValueOnBalanceByMerchantUser.mockRejectedValueOnce(new Error('Database error'));
 
-        
-
+            await BankMerchant.AddValueOnBalance(mockReq, mockRes);
+            
+            expect(mockRes.status).toHaveBeenCalledWith(500);
+            expect(mockRes.send).toHaveBeenCalledWith('Internal server error');
+        });
     });
 });
