@@ -32,11 +32,11 @@ class BankUsers {
 
   static async TransactionBalance(req, res) {
     try {
-        const { email, value } = req.body;
+        const { emailsender, emailReciver,  value } = req.body;
         const isAuthorized = await authorizationMiddleware(req, res);
         
         if (isAuthorized) {
-          const result = await query.AddBalanceTransaction(email, value);
+          const result = await query.AddBalanceTransaction(emailsender, emailReciver, value);
           res.status(200).json("Balance $ " + result);
         } else {
           res.status(403).json({ error: "Transação não autorizada" });
