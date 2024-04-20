@@ -1,5 +1,6 @@
 const query = require('../database/models/BankQuery');
 const authorizationMiddleware = require('../middleware/authorizationMiddleware');
+const notification = require('../services/notificationService');
 
 class BankUsers {
   static async CheckBalance(req, res) {
@@ -32,20 +33,28 @@ class BankUsers {
 
   static async TransactionBalance(req, res) {
     try {
-        const { emailsender, emailReciver,  value } = req.body;
-        const isAuthorized = await authorizationMiddleware(req, res);
-        
-        if (isAuthorized) {
-          const result = await query.AddBalanceTransaction(emailsender, emailReciver, value);
-          res.status(200).json("Balance $ " + result);
+      const { emailsender, emailReciver,  value } = req.body;
+      const isAuthorized = await authorizationMiddleware(req, res);
+      
+      if (isAuthorized) {
+        const result = await query.AddBalanceTransaction(emailsender, emailReciver, value);
+        if (result.error) {
+          res.status(400).json({ error: result.error });
         } else {
-          res.status(403).json({ error: "Transação não autorizada" });
+          notification.sendNotification(emailsender, emailReciver, value);
+          res.status(200).json("Transação feita");
         }
+      } else {
+        res.status(403).json({ error: "Transação não autorizada" });
+      }
     } catch (error) {
         console.error(error);
         res.status(505).send('Internal server error');
     }
-}
+  }
+  
+
+
 
 }
 

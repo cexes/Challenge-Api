@@ -130,10 +130,10 @@ async function AddBalanceTransaction(senderEmail, receiverEmail, value) {
       return result;
     } else {
       throw new Error("Saldo insuficiente para concluir a transação.");
+      
     }
   } catch (error) {
-    console.error(error);
-    throw error;
+    return { error: error.message };
   }
 }
 
